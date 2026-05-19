@@ -1,734 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultra KH — Next Gen Social Platform</title>
-    <!-- Font Awesome 6 Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Plus Jakarta Sans & Hanuman -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Hanuman:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg-main: #f7faf8; 
-            --bg-card: #ffffff; 
-            --bg-input: #edf2f0; 
-            --border-subtle: rgba(22, 66, 55, 0.08); 
-            --border-active: rgba(22, 66, 55, 0.2);
-            --text-primary: #122622; 
-            --text-secondary: #5a736e; 
-            --accent-glow: #1b5e4f; 
-            --error-red: #c14747;
-            --font-stack: 'Plus Jakarta Sans', 'Hanuman', system-ui, sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WeChat Style Chat Clone</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: var(--font-stack);
-            letter-spacing: -0.01em;
-        }
+    body {
+      background: #f0f0f0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        body {
-            background: radial-gradient(circle at 50% 0%, #edf5f2 0%, var(--bg-main) 80%);
-            color: var(--text-primary);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-        }
+    .app {
+      width: 100%;
+      max-width: 420px;
+      height: 90vh;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
 
-        .app-shell {
-            display: flex;
-            width: 100vw;
-            height: 100vh;
-            background: transparent;
-            position: relative;
-        }
+    .header {
+      background: #07c160;
+      color: white;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-        /* --- SIDE NAVIGATION --- */
-        .sidebar-nav {
-            width: 240px;
-            border-right: 1px solid var(--border-subtle);
-            display: flex;
-            flex-direction: column;
-            padding: 32px 24px;
-            justify-content: space-between;
-            background: rgba(247, 250, 248, 0.6);
-            backdrop-filter: blur(20px);
-        }
+    .header h2 {
+      font-size: 20px;
+    }
 
-        .brand-cluster {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 22px;
-            color: var(--text-primary);
-            text-decoration: none;
-            padding-left: 8px;
-        }
+    .status {
+      font-size: 12px;
+      opacity: 0.8;
+    }
 
-        .brand-logo-box {
-            background: var(--accent-glow);
-            color: #ffffff;
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 700;
-            box-shadow: 0 4px 10px rgba(27, 94, 79, 0.2);
-        }
+    .chat-box {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      background: #e5ddd5;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-        .nav-links-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-top: -100px;
-        }
+    .message {
+      max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 15px;
+      font-size: 14px;
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
 
-        .nav-pill {
-            display: flex;
-            align-items: center;
-            padding: 12px 14px;
-            color: var(--text-secondary);
-            font-size: 15px;
-            font-weight: 500;
-            text-decoration: none;
-            border-radius: 10px;
-            transition: all 0.2s;
-            cursor: pointer;
-        }
+    .received {
+      align-self: flex-start;
+      background: white;
+      border-bottom-left-radius: 5px;
+    }
 
-        .nav-pill i {
-            margin-right: 14px;
-            font-size: 18px;
-        }
+    .sent {
+      align-self: flex-end;
+      background: #95ec69;
+      border-bottom-right-radius: 5px;
+    }
 
-        .nav-pill:hover, .nav-pill.active {
-            color: var(--text-primary);
-            background: var(--bg-card);
-            box-shadow: 0 4px 12px rgba(22, 66, 55, 0.03);
-        }
+    .input-area {
+      display: flex;
+      padding: 10px;
+      background: #f7f7f7;
+      border-top: 1px solid #ddd;
+    }
 
-        .lang-switcher {
-            display: flex;
-            gap: 8px;
-            padding: 4px;
-            background: var(--bg-input);
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
+    .input-area input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 25px;
+      outline: none;
+      font-size: 14px;
+    }
 
-        .lang-btn {
-            flex: 1;
-            padding: 6px;
-            border: none;
-            background: transparent;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 6px;
-            transition: all 0.2s;
-            color: var(--text-secondary);
-        }
+    .input-area button {
+      margin-left: 10px;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 25px;
+      background: #07c160;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
 
-        .lang-btn.active {
-            background: var(--bg-card);
-            color: var(--text-primary);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        }
+    .input-area button:hover {
+      background: #05a14f;
+    }
 
-        .user-footer-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      background: white;
+      padding: 10px 0;
+      border-top: 1px solid #ddd;
+    }
 
-        .user-widget {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px;
-            border-radius: 12px;
-            cursor: pointer;
-            border: 1px solid transparent;
-            transition: all 0.2s;
-        }
+    .nav-item {
+      text-align: center;
+      font-size: 12px;
+      color: #555;
+      cursor: pointer;
+    }
 
-        .user-widget:hover {
-            background: var(--bg-card);
-            border-color: var(--border-subtle);
-        }
+    .nav-item.active {
+      color: #07c160;
+      font-weight: bold;
+    }
 
-        .avatar-smooth {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: #cbdad5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .btn-signout {
-            display: none;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid rgba(193, 71, 71, 0.1);
-            background: rgba(193, 71, 71, 0.04);
-            color: var(--error-red);
-            font-size: 13.5px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-signout:hover {
-            background: var(--error-red);
-            color: #ffffff;
-        }
-
-        /* --- WORKSPACE STAGE --- */
-        .workspace-timeline {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .workspace-top-bar {
-            height: 72px;
-            padding: 0 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        .view-label {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .search-enclosure {
-            display: flex;
-            align-items: center;
-            background: var(--bg-input);
-            padding: 8px 14px;
-            border-radius: 10px;
-            width: 280px;
-        }
-
-        .search-enclosure input {
-            background: transparent;
-            border: none;
-            outline: none;
-            color: var(--text-primary);
-            margin-left: 10px;
-            width: 100%;
-        }
-
-        .scroll-canvas {
-            flex: 1;
-            overflow-y: auto;
-            padding: 40px;
-            max-width: 720px;
-            width: 100%;
-            margin: 0 auto;
-        }
-
-        .canvas-composer {
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 32px;
-            border: 1px solid var(--border-subtle);
-        }
-
-        .interactive-text-box {
-            width: 100%;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: var(--text-primary);
-            font-size: 15px;
-            resize: none;
-            padding-top: 8px;
-        }
-
-        .composer-bottom-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid var(--border-subtle);
-        }
-
-        .btn-premium-action {
-            background: var(--accent-glow);
-            color: #ffffff;
-            border: none;
-            padding: 8px 18px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .stream-card-node {
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-subtle);
-        }
-
-        .node-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .node-user-name {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .node-user-handle {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        .body-narrative-block {
-            font-size: 15px;
-            line-height: 1.6;
-            margin-bottom: 18px;
-        }
-
-        .node-interaction-dock {
-            display: flex;
-            gap: 24px;
-            border-top: 1px solid var(--border-subtle);
-            padding-top: 16px;
-            color: var(--text-secondary);
-            font-size: 13.5px;
-        }
-
-        /* --- AUTH MODAL SYSTEM --- */
-        .auth-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(18, 38, 34, 0.3);
-            backdrop-filter: blur(8px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .auth-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .auth-modal {
-            background: var(--bg-card);
-            width: 400px;
-            padding: 36px;
-            border-radius: 20px;
-            border: 1px solid var(--border-subtle);
-            box-shadow: 0 20px 40px rgba(22, 66, 55, 0.1);
-            position: relative;
-        }
-
-        .close-auth {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: transparent;
-            border: none;
-            font-size: 18px;
-            color: var(--text-secondary);
-            cursor: pointer;
-        }
-
-        .auth-tabs {
-            display: flex;
-            border-bottom: 2px solid var(--bg-input);
-            margin-bottom: 24px;
-        }
-
-        .auth-tab {
-            flex: 1;
-            text-align: center;
-            padding-bottom: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            cursor: pointer;
-        }
-
-        .auth-tab.active {
-            color: var(--accent-glow);
-            border-bottom: 2px solid var(--accent-glow);
-        }
-
-        .auth-form {
-            display: none;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .auth-form.active {
-            display: flex;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .input-group label {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-
-        .input-group input {
-            background: var(--bg-input);
-            border: 1px solid transparent;
-            padding: 12px;
-            border-radius: 8px;
-            outline: none;
-            color: var(--text-primary);
-            font-size: 14px;
-        }
-
-        .auth-btn {
-            background: var(--accent-glow);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-    </style>
+    @media(max-width: 500px) {
+      .app {
+        height: 100vh;
+        border-radius: 0;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="app-shell">
-        <nav class="sidebar-nav">
-            <div>
-                <a href="#" class="brand-cluster" style="margin-bottom: 30px;">
-                    <div class="brand-logo-box">Uᴷᴴ</div>
-                    Ultra KH
-                </a>
-                <div class="lang-switcher">
-                    <button class="lang-btn active" id="btn-en" onclick="switchLang('en')">EN</button>
-                    <button class="lang-btn" id="btn-kh" onclick="switchLang('kh')">ខ្មែរ</button>
-                </div>
-            </div>
-            
-            <div class="nav-links-stack">
-                <div class="nav-pill active"><i class="fa-solid fa-house-laptop"></i> <span data-key="nav-home">Home</span></div>
-                <div class="nav-pill"><i class="fa-solid fa-comment-dots"></i> <span data-key="nav-msg">Messages</span></div>
-                <div class="nav-pill"><i class="fa-solid fa-people-roof"></i> <span data-key="nav-profile">Profile</span></div>
-            </div>
-
-            <div class="user-footer-wrapper">
-                <div class="user-widget" id="userAccountWidget" onclick="handleWidgetClick()">
-                    <div class="avatar-smooth" id="userAvatarContainer">
-                        <i class="fa-solid fa-user" id="guestAvatarIcon" style="color: var(--accent-glow)"></i>
-                    </div>
-                    <div class="user-meta-info">
-                        <span class="profile-name" id="profileNameDisplay" data-key="user-status-guest">Guest Account</span>
-                        <span class="profile-handle" id="profileHandleDisplay" data-key="user-action-guest">Click to Sign In</span>
-                    </div>
-                </div>
-                <button class="btn-signout" id="btnSignout" onclick="executeSignOut()">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                    <span data-key="btn-logout">Sign Out</span>
-                </button>
-            </div>
-        </nav>
-
-        <main class="workspace-timeline">
-            <div class="workspace-top-bar">
-                <span class="view-label" data-key="feed-title">Discover Feed</span>
-                <div class="search-enclosure">
-                    <i class="fa-solid fa-magnifying-glass" style="color: #7a948f; font-size: 13px;"></i>
-                    <input type="text" id="search-bar" placeholder="Search spaces...">
-                </div>
-            </div>
-
-            <div class="scroll-canvas">
-                <div class="canvas-composer">
-                    <textarea class="interactive-text-box" id="composer-text" placeholder="What ideas are you designing today?" rows="2"></textarea>
-                    <div class="composer-bottom-bar">
-                        <div style="display: flex; gap: 14px; color: var(--text-secondary);"><i class="fa-regular fa-image"></i></div>
-                        <button class="btn-premium-action" onclick="executePublishPost()" data-key="btn-publish">Publish</button>
-                    </div>
-                </div>
-
-                <!-- Live Post Stream -->
-                <div id="postsContainer"></div>
-            </div>
-        </main>
+<div class="app">
+  <div class="header">
+    <div>
+      <h2>Ultra Chat</h2>
+      <div class="status">Online</div>
     </div>
+    <div>⋮</div>
+  </div>
 
-    <!-- AUTHENTICATION DIALOG -->
-    <div class="auth-overlay" id="authOverlay">
-        <div class="auth-modal">
-            <button class="close-auth" onclick="closeAuthModal()"><i class="fa-solid fa-xmark"></i></button>
-            <div class="auth-tabs">
-                <div class="auth-tab active" id="tabSignin" onclick="toggleAuthTab('signin')" data-key="tab-signin">Sign In</div>
-                <div class="auth-tab" id="tabSignup" onclick="toggleAuthTab('signup')" data-key="tab-signup">Sign Up</div>
-            </div>
+  <div class="chat-box" id="chatBox">
+    <div class="message received">Hello 👋</div>
+    <div class="message sent">Hi! Welcome to Ultra Chat.</div>
+  </div>
 
-            <form class="auth-form active" id="formSignin" onsubmit="executeSignIn(event)">
-                <div class="input-group"><label data-key="lbl-email">Email Address</label><input type="email" id="loginEmail" required></div>
-                <div class="input-group"><label data-key="lbl-password">Password</label><input type="password" id="loginPassword" required></div>
-                <button class="auth-btn" type="submit" data-key="btn-signin">Sign In</button>
-            </form>
+  <div class="input-area">
+    <input type="text" id="messageInput" placeholder="Type a message..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
 
-            <form class="auth-form" id="formSignup" onsubmit="executeSignUp(event)">
-                <div class="input-group"><label data-key="lbl-name">Full Name</label><input type="text" id="signUpName" required></div>
-                <div class="input-group"><label data-key="lbl-email">Email Address</label><input type="email" id="signUpEmail" required></div>
-                <div class="input-group"><label data-key="lbl-password">Password</label><input type="password" id="signUpPassword" required></div>
-                <button class="auth-btn" type="submit" data-key="btn-signup">Create Account</button>
-            </form>
-        </div>
-    </div>
+  <div class="bottom-nav">
+    <div class="nav-item active">💬<br>Chats</div>
+    <div class="nav-item">👥<br>Contacts</div>
+    <div class="nav-item">🔍<br>Discover</div>
+    <div class="nav-item">⚙️<br>Me</div>
+  </div>
+</div>
 
-    <!-- WIRE UP FIREBASE MODULES -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getDatabase, ref, push, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+<script>
+  const chatBox = document.getElementById('chatBox');
+  const messageInput = document.getElementById('messageInput');
 
-        // ==========================================
-        // STEP 2: PASTE YOUR FIREBASE CONFIG HERE
-        // ==========================================
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_MESSAGING_ID",
-            appId: "YOUR_APP_ID"
-        };
+  function sendMessage() {
+    const message = messageInput.value.trim();
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getDatabase(app);
+    if (message === '') return;
 
-        let currentUserObject = null;
+    const msgDiv = document.createElement('div');
+    msgDiv.classList.add('message', 'sent');
+    msgDiv.textContent = message;
 
-        // Listen for Realtime Auth Changes
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                currentUserObject = user;
-                isLoggedIn = true;
-                activeUser.name = user.displayName || "Ultra Member";
-                activeUser.handle = "@" + (user.displayName || "user").toLowerCase().replace(/\s+/g, '');
-            } else {
-                currentUserObject = null;
-                isLoggedIn = false;
-            }
-            updateProfileUIState();
-        });
+    chatBox.appendChild(msgDiv);
+    messageInput.value = '';
 
-        // Sign Up Execution
-        window.executeSignUp = async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('signUpName').value;
-            const email = document.getElementById('signUpEmail').value;
-            const password = document.getElementById('signUpPassword').value;
+    chatBox.scrollTop = chatBox.scrollHeight;
 
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                await updateProfile(userCredential.user, { displayName: name });
-                alert("Account created successfully!");
-                closeAuthModal();
-            } catch (error) {
-                alert(error.message);
-            }
-        };
+    setTimeout(() => {
+      const reply = document.createElement('div');
+      reply.classList.add('message', 'received');
+      reply.textContent = 'Received: ' + message;
 
-        // Sign In Execution
-        window.executeSignIn = async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
+      chatBox.appendChild(reply);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }, 800);
+  }
 
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                closeAuthModal();
-            } catch (error) {
-                alert(error.message);
-            }
-        };
+  messageInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  });
+</script>
 
-        // Sign Out Execution
-        window.executeSignOut = async () => {
-            await signOut(auth);
-        };
-
-        // Publish Post to Database
-        window.executePublishPost = async () => {
-            if (!currentUserObject) {
-                alert("Please sign in to publish a post!");
-                openAuthModal();
-                return;
-            }
-            const postText = document.getElementById('composer-text').value.trim();
-            if (!postText) return;
-
-            try {
-                await push(ref(db, 'posts'), {
-                    body: postText,
-                    author: currentUserObject.displayName || "Anonymous",
-                    handle: "@" + currentUserObject.displayName.toLowerCase().replace(/\s+/g, ''),
-                    timestamp: serverTimestamp()
-                });
-                document.getElementById('composer-text').value = '';
-            } catch (error) {
-                alert(error.message);
-            }
-        };
-
-        // Stream and Display Realtime Posts
-        onValue(ref(db, 'posts'), (snapshot) => {
-            const container = document.getElementById('postsContainer');
-            container.innerHTML = '';
-            const data = snapshot.val();
-            if (!data) return;
-
-            // Turn object into sorted array (newest posts first)
-            const sortedPosts = Object.values(data).reverse();
-
-            sortedPosts.forEach(post => {
-                const node = document.createElement('div');
-                node.className = 'stream-card-node';
-                node.innerHTML = `
-                    <div class="node-header">
-                        <div class="avatar-smooth" style="width:28px; height:28px; font-size:11px; background:#cbdad5;"><i class="fa-solid fa-user"></i></div>
-                        <div>
-                            <div class="node-user-name">${post.author}</div>
-                            <div class="node-user-handle">${post.handle}</div>
-                        </div>
-                    </div>
-                    <div class="body-narrative-block">${post.body}</div>
-                    <div class="node-interaction-dock">
-                        <div><i class="fa-regular fa-heart"></i> 0</div>
-                    </div>
-                `;
-                container.appendChild(node);
-            });
-        });
-    </script>
-
-    <!-- GENERAL INTERFACE CONTROLS -->
-    <script>
-        let currentLang = 'en';
-        let isLoggedIn = false;
-        let activeUser = { name: '', handle: '' };
-
-        const langData = {
-            en: {
-                "nav-home": "Home", "nav-msg": "Messages", "nav-profile": "Profile",
-                "user-status-guest": "Guest Account", "user-action-guest": "Click to Sign In",
-                "feed-title": "Discover Feed", "btn-publish": "Publish", "btn-logout": "Sign Out",
-                "tab-signin": "Sign In", "tab-signup": "Sign Up", "lbl-email": "Email Address",
-                "lbl-password": "Password", "lbl-name": "Full Name", "btn-signin": "Sign In", "btn-signup": "Create Account"
-            },
-            kh: {
-                "nav-home": "ទំព័រដើម", "nav-msg": "សារកម្សាន្ត", "nav-profile": "ប្រវត្តិរូប",
-                "user-status-guest": "គណនីភ្ញៀវ", "user-action-guest": "ចុចទីនេះដើម្បីចូលប្រព័ន្ធ",
-                "feed-title": "ព័ត៌មានថ្មីៗ", "btn-publish": "ផ្សព្វផ្សាយ", "btn-logout": "ចាកចេញ",
-                "tab-signin": "ចូលប្រព័ន្ធ", "tab-signup": "ចុះឈ្មោះ", "lbl-email": "អាសយដ្ឋានអ៊ីមែល",
-                "lbl-password": "លេខកូដសម្ងាត់", "lbl-name": "ឈ្មោះពេញ", "btn-signin": "ចូលគណនី", "btn-signup": "បង្កើតគណនីថ្មី"
-            }
-        };
-
-        function switchLang(lang) {
-            currentLang = lang;
-            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`btn-${lang}`).classList.add('active');
-            document.querySelectorAll('[data-key]').forEach(el => {
-                const key = el.getAttribute('data-key');
-                if(langData[lang][key]) el.textContent = langData[lang][key];
-            });
-            updateProfileUIState();
-        }
-
-        function updateProfileUIState() {
-            const nameEl = document.getElementById('profileNameDisplay');
-            const handleEl = document.getElementById('profileHandleDisplay');
-            const avatarBox = document.getElementById('userAvatarContainer');
-            const guestIcon = document.getElementById('guestAvatarIcon');
-            const signoutBtn = document.getElementById('btnSignout');
-
-            if (isLoggedIn) {
-                nameEl.removeAttribute('data-key');
-                handleEl.removeAttribute('data-key');
-                nameEl.textContent = activeUser.name;
-                handleEl.textContent = activeUser.handle;
-                guestIcon.style.display = 'none';
-                avatarBox.style.backgroundImage = "url('https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80')";
-                signoutBtn.style.display = 'flex';
-            } else {
-                nameEl.setAttribute('data-key', 'user-status-guest');
-                handleEl.setAttribute('data-key', 'user-action-guest');
-                nameEl.textContent = langData[currentLang]['user-status-guest'];
-                handleEl.textContent = langData[currentLang]['user-action-guest'];
-                avatarBox.style.backgroundImage = 'none';
-                guestIcon.style.display = 'block';
-                signoutBtn.style.display = 'none';
-            }
-        }
-
-        function handleWidgetClick() { if (!isLoggedIn) openAuthModal(); }
-        function openAuthModal() { document.getElementById('authOverlay').classList.add('active'); }
-        function closeAuthModal() { document.getElementById('authOverlay').classList.remove('active'); }
-        function toggleAuthTab(type) {
-            document.getElementById('tabSignin').classList.remove('active');
-            document.getElementById('tabSignup').classList.remove('active');
-            document.getElementById('formSignin').classList.remove('active');
-            document.getElementById('formSignup').classList.remove('active');
-            if(type === 'signin') {
-                document.getElementById('tabSignin').classList.add('active');
-                document.getElementById('formSignin').classList.add('active');
-            } else {
-                document.getElementById('tabSignup').classList.add('active');
-                document.getElementById('formSignup').classList.add('active');
-            }
-        }
-    </script>
 </body>
 </html>
